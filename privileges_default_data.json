@@ -1,0 +1,18 @@
+{
+  "id": 2,
+  "roleName": "admin",
+  "action": [
+    {
+      "id": 4,
+      "actionName": "read-role"
+    },
+    {
+      "id": 5,
+      "actionName": "read-route"
+    },
+    {
+      "id": 8,
+      "actionName": "read-user"
+    }
+  ]
+}
