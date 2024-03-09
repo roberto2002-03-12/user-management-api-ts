@@ -74,15 +74,27 @@ export const getAllRolesService = async (queries: IRoleQuery) => {
 }
 
 
-export const getOneRoleService = async (roleId: number) => {
+export const getOneRoleService = async (roleId: number, includeActions?: boolean) => {
   try {
+    const includeOptions: Includeable[] = [];
 
-    const role = await DataBase.instance.role.findByPk(roleId, {
-      include: [{
+    if (includeActions) {
+      includeOptions.push({
         model: DataBase.instance.action,
         as: 'action',
-        required: false
-      }]
+        required: false,
+        attributes: ['id', 'actionName']
+      })
+    } else {
+      includeOptions.push({
+        model: DataBase.instance.action,
+        as: 'action',
+        required: false,
+      });
+    }
+
+    const role = await DataBase.instance.role.findByPk(roleId, {
+      include: includeOptions
     });
 
     if (!role) throw createHttpError(404, 'Role not found');
@@ -92,7 +104,7 @@ export const getOneRoleService = async (roleId: number) => {
     const routesId: number[] = [];
     let routes: IRoute[] = [];
 
-    if (typeof role.action !== 'undefined' && role.action.length > 0) {
+    if (typeof role.action !== 'undefined' && role.action.length > 0 && typeof includeActions === 'undefined') {
       for (let i: number = 0; i < role.action.length; i++) {
         const filterId = routesId.includes(role.action[i].routeId);
         if (!filterId) routesId.push(role.action[i].routeId);
@@ -116,12 +128,24 @@ export const getOneRoleService = async (roleId: number) => {
           }
         }
       }
-    };
+    }
 
     role.dataValues.route = routes;
-    delete role.dataValues.action;
+    if (typeof includeActions === 'undefined') {
+      delete role.dataValues.action;
+    };
 
     return role;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const getRolesForSelectService = async () => {
+  try {
+    return await DataBase.instance.role.findAll({
+      attributes: ['roleName']
+    });
   } catch (error) {
     throw error;
   }

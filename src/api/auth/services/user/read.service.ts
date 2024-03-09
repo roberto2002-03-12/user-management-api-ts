@@ -19,6 +19,10 @@ export const getUserByEmail = async (email: string) => {
         model: DataBase.instance.role,
         as: 'role',
         required: false
+      }, {
+        model: DataBase.instance.profile,
+        as: 'profile',
+        required: false
       }]
     });
 

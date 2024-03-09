@@ -3,8 +3,9 @@ import createHttpError from 'http-errors';
 import { CreateRole, IRoleQuery, IUserRole, UpdateRole } from '../model';
 import { 
   createRoleService, getAllRolesService,
-  assignRoleToUserService, desactivateOrActivateRoleService,
-  getOneRoleService, updateAssignMassiveActionToRoleService
+  assignRoleToUserMassiveService, desactivateOrActivateRoleService,
+  getOneRoleService, updateAssignMassiveActionToRoleService,
+  getRolesForSelectService
 } from '../services';
 import { IPayloadUser, OrderType } from '../../../shared/models';
 
@@ -19,11 +20,10 @@ export const createRoleController = async (req: Request, res: Response, next: Ne
   }
 }
 
-export const assignRoleToUserController = async (req: Request, res: Response, next: NextFunction) => {
+export const assignRoleToUserMassiveController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = req.user as IPayloadUser;
-    const assignment: IUserRole = req.body;
-    const result = await assignRoleToUserService(assignment, user.sub);
+    const result = await assignRoleToUserMassiveService(req.body, user.sub);
     return res.status(201).json(result);
   } catch (error: any) {
     next(createHttpError(500, error));
@@ -52,8 +52,9 @@ export const getAllRolesController = async (req: Request, res: Response, next: N
 
 export const getOneRoleController = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const { includeActions } = req.query;
     const routeId: number = parseInt(req.params.id);
-    const result = await getOneRoleService(routeId);
+    const result = await getOneRoleService(routeId, typeof includeActions === 'undefined' ? undefined : includeActions === 'true' ? true : false );
     return res.status(200).json(result);
   } catch (error: any) {
     next(createHttpError(500, error));
@@ -78,6 +79,15 @@ export const updateAssignMassiveActionToRoleController = async (req: Request, re
     const data: UpdateRole = req.body;
     const result = await updateAssignMassiveActionToRoleService(data, roleId, user.sub);
     return res.status(201).json(result);
+  } catch (error: any) {
+    next(createHttpError(500, error));
+  }
+}
+
+export const getRolesForSelectController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await getRolesForSelectService();
+    return res.status(200).json(result);
   } catch (error: any) {
     next(createHttpError(500, error));
   }

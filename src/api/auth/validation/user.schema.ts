@@ -73,7 +73,7 @@ export const changePasswordSchema = Joi.object({
 export const getAllUsersSchema = Joi.object({
   order: order.optional(),
   fullName: fullName.optional(),
-  email: email.optional(),
+  email: Joi.string().optional(),
   roleName: roleName.optional(),
   active: active.optional(),
   createdAtStart: createdAtStart.optional(),

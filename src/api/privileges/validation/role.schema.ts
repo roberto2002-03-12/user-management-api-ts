@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi, { boolean } from 'joi';
 
 const id = Joi.number().min(1);
 
@@ -14,14 +14,30 @@ const createdAtEnd = Joi.date();
 const limit = Joi.number().max(100).min(1);
 const page = Joi.number().min(1);
 
+const actionSchema = Joi.object({
+  id: id.required(),
+  actionName: Joi.string().max(45).optional(),
+  role_action: Joi.object().optional()
+});
+
 export const createRoleSchema = Joi.object({
   roleName: roleName.required(),
-  description: description.optional()
+  description: description.optional(),
+  action: Joi.array().items(actionSchema).optional()
+});
+
+const roleSchemaForAssign = Joi.object({
+  id: id.required(),
+  roleName: roleName.optional()
 });
 
 export const assignRoleToUserSchema = Joi.object({
-  user_id: id.required(),
-  role_id: id.required()
+  userId: id.required(),
+  roles: Joi.array().items(roleSchemaForAssign).optional()
+});
+
+export const includeActionsOnSelectSchema = Joi.object({
+  includeActions: Joi.string().valid('true').optional()
 });
 
 export const getAllRolesSchema = Joi.object({
@@ -39,14 +55,9 @@ export const getByIdSchema = Joi.object({
   id: id.required()
 });
 
-const actionSchema = Joi.object({
-  id: id.required(),
-  actionName: Joi.string().max(45).optional()
-});
-
 export const updateAssignMassiveActionToRoleSchema = Joi.object({
   roleName: roleName.optional(),
   description: description.optional(),
-  action: Joi.array().items(actionSchema)
+  action: Joi.array().items(actionSchema).optional()
 });
 

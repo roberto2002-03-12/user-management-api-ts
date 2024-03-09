@@ -4,7 +4,7 @@ import {
   getAllUsersController, registerController,
   createUserAndProfileController, sendCodeRecoveryController, 
   changeForgotPasswordController, changePasswordController,
-  getUserByIdController
+  getUserByIdController, desactivateOrActivateUserController
 } from '../controller/user.controller';
 import {
   getByIdSchema, getAllUsersSchema,
@@ -57,4 +57,12 @@ router.get(
   checkCredentials('read-user'), // read-user 8
   validateMiddleware(getByIdSchema, 'params'),
   getUserByIdController
+);
+
+router.patch(
+  '/user/:id',
+  passport.authenticate('jwt', { session: false }),
+  checkCredentials('edit-user'),
+  validateMiddleware(getByIdSchema, 'params'),
+  desactivateOrActivateUserController
 );

@@ -25,6 +25,7 @@ export const consultPrivilegeService = async (roles: string[], action: string) =
     INNER JOIN action AS a ON a.id = ra.action_id
     WHERE r.role_name IN (:roles)
     AND a.action_name = :action
+    AND r.active = 1
     `
 
     const result = await DataBase.instance.sequelize.query(sqlQuery2, {

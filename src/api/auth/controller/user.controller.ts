@@ -3,7 +3,8 @@ import createHttpError from 'http-errors';
 import {
   getAllUsersService, createUserAndProfileService,
   sendCodeRecoveryService, changePasswordService,
-  changeForgotPasswordService, getUserByIdService
+  changeForgotPasswordService, getUserByIdService,
+  desactivateOrActivateUserService
 } from '../services';
 import { CreateUser } from '../model';
 import { CreateProfile } from '../../profile/model';
@@ -86,6 +87,17 @@ export const changePasswordController = async (req: Request, res: Response, next
   try {
     const user = req.user as IPayloadUser;
     const result = await changePasswordService(req.body.newPassword, user.sub);
+    return res.status(201).json(result);
+  } catch (error: any) {
+    next(createHttpError(500, error));
+  }
+}
+
+export const desactivateOrActivateUserController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id: number = parseInt(req.params.id)
+    const user = req.user as IPayloadUser;
+    const result = await desactivateOrActivateUserService(id, user.sub);
     return res.status(201).json(result);
   } catch (error: any) {
     next(createHttpError(500, error));

@@ -6,8 +6,9 @@ import {
 
 import { 
   createRoleController, getAllRolesController,
-  assignRoleToUserController, desactivateOrActivateRoleController,
-  getOneRoleController, updateAssignMassiveActionToRoleController
+  assignRoleToUserMassiveController, desactivateOrActivateRoleController,
+  getOneRoleController, updateAssignMassiveActionToRoleController,
+  getRolesForSelectController
 } from '../controller/role.controller';
 
 import {
@@ -23,7 +24,8 @@ import { validateMiddleware } from '../../../middlewares'
 
 import { 
   createRoleSchema, assignRoleToUserSchema,
-  getByIdSchema, getAllRolesSchema, updateAssignMassiveActionToRoleSchema
+  getByIdSchema, getAllRolesSchema, updateAssignMassiveActionToRoleSchema,
+  includeActionsOnSelectSchema
 } from '../validation/role.schema';
 
 import {
@@ -46,7 +48,7 @@ router.post(
   '/role/assign', 
   checkCredentials('assign-role'),
   validateMiddleware(assignRoleToUserSchema, 'body'), 
-  assignRoleToUserController,
+  assignRoleToUserMassiveController,
 ); // assign-role 2
 router.patch(
   '/role/:id', 
@@ -64,8 +66,14 @@ router.get(
   '/role/:id', 
   checkCredentials( 'read-role'), 
   validateMiddleware(getByIdSchema, 'params'),
+  validateMiddleware(includeActionsOnSelectSchema, 'query'),
   getOneRoleController
 ); // read-role
+router.get(
+  '/role-select', // in case you have low roles, then you can use select
+  checkCredentials('read-role'),
+  getRolesForSelectController
+);
 router.put(
   '/role/:id',
   validateMiddleware(updateAssignMassiveActionToRoleSchema, 'body'), 
