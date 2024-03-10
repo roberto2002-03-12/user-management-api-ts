@@ -38,7 +38,7 @@ router.patch(
 router.post(
   '/user',
   passport.authenticate('jwt', { session: false }),
-  checkCredentials(['create-user']),
+  checkCredentials(['create-user', 'assign-role']),
   validateMiddleware(createUserAndProfileSchema, 'body'),
   createUserAndProfileController
 );

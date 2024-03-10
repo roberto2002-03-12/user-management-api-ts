@@ -91,9 +91,12 @@ router.get(
 // router.post('/route/assign', checkCredentials( 'assign-route'), assignRouteToRoleController); // assign-route 6
 
 router.post('/action', createActionController); // post-action
-router.post(
-  '/action/assign', 
-  validateMiddleware(assignMassiveActionsToRoleSchema, 'body'), 
-  checkCredentials(['assign-action']),
-  assignMassiveActionsToRoleController
-); // assign-action 7
+// this no needed anymore, you can just add 'read-action' to createRoleController
+// or you can just leave it by one, why would you assign the privilege to create role
+// to someone if the person can't assign privileges
+// router.post( 
+//   '/action/assign', 
+//   validateMiddleware(assignMassiveActionsToRoleSchema, 'body'), 
+//   checkCredentials(['assign-action']),
+//   assignMassiveActionsToRoleController
+// ); // assign-action 7

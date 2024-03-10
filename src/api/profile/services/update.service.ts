@@ -1,6 +1,7 @@
 import { DataBase } from '../../../database';
-import createHttpError from 'http-errors';
-import { UpdateProfile } from '../model';
+import { CreateProfile, UpdateProfile } from '../model';
+import config from '../../../config';
+import moment from 'moment-timezone';
 
 export const updateProfileService = async (data: UpdateProfile, userId: number) => {
   try {
@@ -9,8 +10,27 @@ export const updateProfileService = async (data: UpdateProfile, userId: number) 
         userId
       }
     });
+
+    const dateNow = moment().tz(config.TIME_ZONE);
+    const dateNowFormat = dateNow.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
   
-    if (!profile) throw createHttpError(404, `Profile doesn't exist`);
+    if (!profile) {
+      const newProfile: CreateProfile = {
+        firstName: data.firstName ?? 'not registed',
+        lastName: data.lastName ?? 'not registed',
+        birth: data.birth ?? new Date(dateNowFormat),
+        phoneNumber: data.phoneNumber ?? 'not registed',
+        userId: userId,
+        created_by: userId,
+        created_at: dateNowFormat,
+        updated_by: userId,
+        updated_at: dateNowFormat
+      }
+
+      await DataBase.instance.profile.create(newProfile);
+
+      return { message: 'profile created successfully' }
+    }
   
     await profile.update(data);
 

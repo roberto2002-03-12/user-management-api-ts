@@ -129,7 +129,8 @@ export const getAllUsersService = async (queries: IUserQuery) => {
           roleName: {
             [Op.like]: `%${queries.roleName}%`
           }
-        }
+        },
+        attributes: ['id', 'roleName']
       }],
       order: [
         [
@@ -163,7 +164,10 @@ export const getUserByIdService = async (id: number) => {
         model: DataBase.instance.role,
         as: 'role',
         required: false
-      }] 
+      }],
+      attributes: {
+        exclude: ['password', 'loggedToken', 'recoveryToken']
+      }
     });
 
     if (!user) throw createHttpError(404, `User with id: ${id}, not found`);
