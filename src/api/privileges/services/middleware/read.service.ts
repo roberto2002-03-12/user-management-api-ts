@@ -2,7 +2,7 @@ import { DataBase } from '../../../../database';
 import { QueryTypes } from 'sequelize';
 import { IRouteCount } from '../../model';
 
-export const consultPrivilegeService = async (roles: string[], action: string) => {
+export const consultPrivilegeService = async (roles: string[], action: string[]) => {
   try {
     // const sqlQuery = 
     // `
@@ -24,7 +24,7 @@ export const consultPrivilegeService = async (roles: string[], action: string) =
     INNER JOIN role_action AS ra ON r.id = ra.role_id
     INNER JOIN action AS a ON a.id = ra.action_id
     WHERE r.role_name IN (:roles)
-    AND a.action_name = :action
+    AND a.action_name IN (:action)
     AND r.active = 1
     `
 

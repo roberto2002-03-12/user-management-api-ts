@@ -17,11 +17,16 @@ const recoveryToken = Joi.string();
 const active = Joi.boolean();
 const order = Joi.string().valid('ASC', 'DESC');
 const fullName = Joi.string().max(85);
-const roleName = Joi.string().max(32);
+const roleName = Joi.string().max(45);
 const createdAtStart = Joi.date();
 const createdAtEnd = Joi.date();
 const limit = Joi.number().max(100).min(1);
 const page = Joi.number().min(1);
+
+const roleAssignedSchema = Joi.object({
+  id: id.required(),
+  roleName: roleName.optional()
+});
 
 export const createUserAndProfileSchema = Joi.object({
   user: Joi.object({
@@ -34,9 +39,7 @@ export const createUserAndProfileSchema = Joi.object({
     birth: birth.required(),
     phoneNumber: phoneNumber.required()
   }).required(),
-  role: Joi.object({
-    roleId: id.optional()
-  }).optional()
+  role: Joi.array().items(roleAssignedSchema).optional()
 });
 
 export const registerSchema = Joi.object({

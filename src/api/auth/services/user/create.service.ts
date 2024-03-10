@@ -6,8 +6,9 @@ import { CreateUser, IUserResult } from '../../model';
 import { CreateProfile } from '../../../profile/model';
 import config from '../../../../config';
 import moment from 'moment-timezone';
+import { CreateUserRole, IRole } from '../../../privileges/model';
 
-export const createUserAndProfileService = async (obj: { user: CreateUser, profile: CreateProfile }, userId?: number, roleId?: number) => {
+export const createUserAndProfileService = async (obj: { user: CreateUser, profile: CreateProfile }, userId?: number, role?: IRole[]) => {
   let transaction: Transaction = await DataBase.instance.sequelize.transaction();
 
   try {
@@ -43,15 +44,21 @@ export const createUserAndProfileService = async (obj: { user: CreateUser, profi
 
     const resultProfile = await DataBase.instance.profile.create(finalProfile, { transaction });
 
-    if (roleId && roleId) {
-      await DataBase.instance.userRole.create({
-        user_id: resultUser.dataValues.id,
-        role_id: roleId,
-        created_by: userId ?? 1000000,
-        created_at: new Date(dateNowFormat),
-        updated_by: userId ?? 1000000,
-        updated_at: new Date(dateNowFormat),
-      }, { transaction });
+    if (role && role.length > 0 && userId) {
+      const rolesToAdd: CreateUserRole[] = [];
+
+      for (let i: number = 0; i < role.length; i++) {
+        rolesToAdd.push({
+          user_id: resultUser.dataValues.id,
+          role_id: role[i].id,
+          created_by: userId ?? 1000000,
+          created_at: new Date(dateNowFormat),
+          updated_by: userId ?? 1000000,
+          updated_at: new Date(dateNowFormat),
+        });
+      }
+
+      await DataBase.instance.userRole.bulkCreate(rolesToAdd, { transaction })
     };
 
     const userToJson: IUserResult = resultUser.toJSON();

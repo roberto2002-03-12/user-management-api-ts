@@ -3,7 +3,7 @@ import { IRouteCount } from '../model';
 import { IPayloadUser } from '../../../shared/models';
 import { consultPrivilegeService } from '../services';
 
-export function checkCredentials(action: string) {
+export function checkCredentials(action: string[]) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as IPayloadUser;
     

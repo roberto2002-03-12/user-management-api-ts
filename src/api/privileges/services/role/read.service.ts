@@ -144,7 +144,8 @@ export const getOneRoleService = async (roleId: number, includeActions?: boolean
 export const getRolesForSelectService = async () => {
   try {
     return await DataBase.instance.role.findAll({
-      attributes: ['roleName']
+      attributes: ['roleName', 'id'],
+      where: { active: true }
     });
   } catch (error) {
     throw error;

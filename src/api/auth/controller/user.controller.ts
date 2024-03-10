@@ -9,6 +9,7 @@ import {
 import { CreateUser } from '../model';
 import { CreateProfile } from '../../profile/model';
 import { IPayloadUser, OrderType } from '../../../shared/models';
+import { IRole } from '../../privileges/model';
 
 export const registerController = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -26,8 +27,8 @@ export const createUserAndProfileController = async (req: Request, res: Response
     const user = req.user as IPayloadUser;
     const userData: CreateUser = req.body.user;
     const profile: CreateProfile = req.body.profile;
-    const roleId: number | undefined = req.body.role === undefined ? undefined : Number(req.body.role.roleId)
-    const result = await createUserAndProfileService({ user: userData, profile }, user.sub, roleId);
+    const role: IRole[] | undefined = req.body.role;
+    const result = await createUserAndProfileService({ user: userData, profile }, user.sub, role);
     return res.status(201).json(result);
   } catch (error: any) {
     next(createHttpError(500, error));

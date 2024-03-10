@@ -38,7 +38,7 @@ router.patch(
 router.post(
   '/user',
   passport.authenticate('jwt', { session: false }),
-  checkCredentials('create-user'),
+  checkCredentials(['create-user']),
   validateMiddleware(createUserAndProfileSchema, 'body'),
   createUserAndProfileController
 );
@@ -46,7 +46,7 @@ router.post(
 router.get(
   '/user',
   passport.authenticate('jwt', { session: false }),
-  checkCredentials('read-user'), // read-user 8
+  checkCredentials(['read-user']), // read-user 8
   validateMiddleware(getAllUsersSchema, 'query'),
   getAllUsersController
 );
@@ -54,7 +54,7 @@ router.get(
 router.get(
   '/user/:id',
   passport.authenticate('jwt', { session: false }),
-  checkCredentials('read-user'), // read-user 8
+  checkCredentials(['read-user']), // read-user 8
   validateMiddleware(getByIdSchema, 'params'),
   getUserByIdController
 );
@@ -62,7 +62,7 @@ router.get(
 router.patch(
   '/user/:id',
   passport.authenticate('jwt', { session: false }),
-  checkCredentials('edit-user'),
+  checkCredentials(['edit-user']),
   validateMiddleware(getByIdSchema, 'params'),
   desactivateOrActivateUserController
 );
