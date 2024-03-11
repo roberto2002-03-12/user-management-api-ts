@@ -47,17 +47,18 @@ export const getOneCatController = async (req: Request, res: Response, next: Nex
 
 export const getAllCatsController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, race, birthStart, birthEnd, price, order, page, limit } = req.query;
+    const { name, race, birthStart, birthEnd, highestPrice, minimumPrice, order, page, limit } = req.query;
     const result = await getAllCatsService({
       name: name?.toString(),
       race: race?.toString(),
       birthStart: birthStart?.toString(),
       birthEnd: birthEnd?.toString(),
-      price: typeof price === 'undefined' ? undefined : Number(price as string),
+      highestPrice: typeof highestPrice === 'undefined' ? undefined : Number(highestPrice as string),
+      minimumPrice: typeof minimumPrice === 'undefined' ? undefined : Number(minimumPrice as string),
       order: typeof order !== 'undefined' && order === 'ASC' ? 'ASC' : 'DESC',
       page: parseInt(page as string),
-      limit: typeof price === 'undefined' ? undefined : Number(page as string),
-    }); 
+      limit: typeof limit === 'undefined' ? undefined : Number(limit as string),
+    });
     return res.status(200).json(result);
   } catch (error: any) {
     next(createHttpError(500, error));

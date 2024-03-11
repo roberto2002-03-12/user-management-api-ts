@@ -16,7 +16,22 @@ export const getAllCatsService = async (queries: ICatQuery) => {
       }
     };
 
-    if (queries.price) whereOptions.price = queries.price
+    if (queries.highestPrice && queries.minimumPrice && queries.highestPrice < queries.minimumPrice) throw createHttpError(400, `Minimum price can't be higher than Highest price`);
+
+    if (queries.minimumPrice && !queries.highestPrice) {
+      whereOptions.price = {
+        [Op.gte]: queries.minimumPrice
+      };
+    } else if (queries.highestPrice && !queries.minimumPrice) {
+      whereOptions.price = {
+        [Op.lte]: queries.highestPrice
+      };
+    } else if (queries.highestPrice && queries.minimumPrice) {
+      whereOptions.price = {
+        [Op.gte]: queries.minimumPrice,
+        [Op.lte]: queries.highestPrice
+      }
+    }
 
     if (queries.birthStart && !queries.birthEnd || !queries.birthStart && queries.birthEnd) throw createHttpError(400, `You have to select a start date and end date, not only one`)
 

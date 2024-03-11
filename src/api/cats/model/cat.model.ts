@@ -7,6 +7,8 @@ export interface ICat {
   race: string; // you can add category but it's just a demo, so i only need the basics
   birth: Date;
   price: number;
+  photoName: string;
+  photoUrl: string;
 
   // i could add "favorite cat" by user, but i'll do it on user client side, since that would
   // be something new for me, anyway this model you won't need it, im pretty sure, it's just a demo
@@ -18,7 +20,8 @@ export interface ICatQuery {
   race?: string;
   birthStart?: string;
   birthEnd?: string;
-  price?: number;
+  highestPrice?: number;
+  minimumPrice?: number;
   order?: string;
   page: number;
   limit?: number;
@@ -56,7 +59,17 @@ export function CatFactory(sequelize: Sequelize): CatStatic {
       price: {
         type: DataTypes.DECIMAL(6, 2),
         allowNull: false
-      }
+      },
+      photoName: {
+        field: 'photo_name',
+        type: DataTypes.STRING(300),
+        allowNull: true,
+      },
+      photoUrl: {
+        field: 'photo_url',
+        type: DataTypes.STRING(300),
+        allowNull: true
+      },
     }, {
       tableName: 'cat',
       timestamps: false

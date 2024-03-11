@@ -30,7 +30,8 @@ export const getAllCatsSchema = Joi.object({
   race: race.optional(),
   birthStart: birth.optional(),
   birthEnd: birth.optional(),
-  price: price.optional(),
+  highestPrice: price.optional(),
+  minimumPrice: price.optional(),
   order: order.optional(),
   page: id.required(),
   limit: id.optional()
