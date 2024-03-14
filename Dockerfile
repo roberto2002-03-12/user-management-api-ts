@@ -2,12 +2,12 @@ FROM node:18
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+#copy everything
+COPY . .
+#then delete these files
+RUN rm -rf .env node_modules
 
 RUN npm install
-
-COPY . .
-RUN rm -rf .env node_modules
 
 RUN npm run build
 
