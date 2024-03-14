@@ -32,9 +32,9 @@ import {
   getAllRoutesSchema
 } from '../validation/route.schema';
 
-import {
-  assignMassiveActionsToRoleSchema
-} from '../validation/action.schema';
+// import {
+//   assignMassiveActionsToRoleSchema
+// } from '../validation/action.schema';
 
 export const router: Router = Router();
 
@@ -81,7 +81,7 @@ router.put(
 );
 // router.get('/try', consultPrivilegeController);
 
-router.post('/route', createRouteController); // create-route
+// router.post('/route', createRouteController); // create-route
 router.get(
   '/route', 
   validateMiddleware(getAllRoutesSchema, 'query'), 
@@ -90,7 +90,7 @@ router.get(
 ); // read-route 5
 // router.post('/route/assign', checkCredentials( 'assign-route'), assignRouteToRoleController); // assign-route 6
 
-router.post('/action', createActionController); // post-action
+// router.post('/action', createActionController); // post-action
 // this no needed anymore, you can just add 'read-action' to createRoleController
 // or you can just leave it by one, why would you assign the privilege to create role
 // to someone if the person can't assign privileges
