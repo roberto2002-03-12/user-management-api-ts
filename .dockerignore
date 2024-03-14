@@ -1,0 +1,8 @@
+# credenciales
+.env
+# dependencias
+node_modules
+# sql
+models_sql.sql
+# dist
+dist
