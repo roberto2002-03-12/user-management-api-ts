@@ -74,11 +74,17 @@ export class DataBase {
   }
 
   private connectDB(): void {
-    this.sequelize.authenticate()
+    const attemptConnection = () => this.sequelize.authenticate()
     .then(() => {
       console.log('Database is running')
     })
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      console.error(err)
+
+      setTimeout(attemptConnection, 60000);
+    });
+
+    attemptConnection();
   }
 
   private associations(): void {
