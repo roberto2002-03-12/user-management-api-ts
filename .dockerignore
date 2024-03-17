@@ -3,6 +3,9 @@
 # dependencias
 node_modules
 # sql
-models_sql.sql
+user_management.sql
 # dist
 dist
+# json
+User_Management.postman_collection.json
+privileges_default_data.json
