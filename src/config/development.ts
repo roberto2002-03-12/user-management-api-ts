@@ -16,7 +16,7 @@ export const development: Development = {
   JWT_SECRET: process.env.JWT_SECRET!,
   EMAIL_ACCESS_KEY: process.env.EMAIL_ACCESS_KEY!,
   EMAIL_SECRET_KEY: process.env.EMAIL_SECRET_KEY!,
-  EMAIL_SECURE: typeof process.env.EMAIL_SECURE !== 'undefined' && process.env.EMAIL_SCURE !== undefined ? process.env.EMAIL_SECURE === 'true' ? true : false : undefined,
+  EMAIL_SECURE: typeof process.env.EMAIL_SECURE !== 'undefined' ? process.env.EMAIL_SECURE === 'true' ? true : false : undefined,
   EMAIL_USE: process.env.EMAIL_USE!,
   EMAIL_HOST: process.env.EMAIL_HOST!,
   EMAIL_PORT: parseInt((process.env.EMAIL_PORT) ?? '587'),
