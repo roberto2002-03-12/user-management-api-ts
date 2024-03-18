@@ -23,6 +23,21 @@ export const sendMail = async (emailOptions: SendMailOptions) => {
       });
     };
 
+    if (config.EMAIL_SECURE === false) {
+      transport = createTransport({
+        host: config.EMAIL_HOST,
+        port: config.EMAIL_PORT,
+        secure: config.EMAIL_SECURE,
+        auth: {
+          user: config.EMAIL_ACCESS_KEY,
+          pass: config.EMAIL_SECRET_KEY
+        },
+        tls: {
+          rejectUnauthorized: false
+        }
+      });
+    }
+
     return await transport.sendMail(emailOptions);
   } catch (error) {
     throw error;
