@@ -88,9 +88,8 @@ export const assignRoleToUserMassiveService = async (data: { userId: number, rol
     const dateNowFormat = dateNow.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
     const rolesAssign: CreateUserRole[] = [];
 
-    for (let i = 0; i < data.roles.length; i++) {
-      const isItANewRole = oldRoles.some(old => old.id !== data.roles[i].id)
-      if (isItANewRole === true) {
+    if (user.role.length === 0) {
+      for (let i = 0; i < data.roles.length; i++) {
         rolesAssign.push({
           user_id: data.userId,
           role_id: data.roles[i].id,
@@ -98,15 +97,29 @@ export const assignRoleToUserMassiveService = async (data: { userId: number, rol
           created_at: new Date(dateNowFormat),
           updated_by: userId,
           updated_at: new Date(dateNowFormat)
-        })
+        });
       }
-    };
-
-    for (let i = 0; i < oldRoles.length; i++) {
-      if (!data.roles.some(rol => rol.id === oldRoles[i].id)) {
-        rolesToDelete.push(oldRoles[i].id);
-      }
-    };
+    } else {
+      for (let i = 0; i < data.roles.length; i++) {
+        const isItANewRole = oldRoles.some(old => old.id !== data.roles[i].id)
+        if (isItANewRole === true) {
+          rolesAssign.push({
+            user_id: data.userId,
+            role_id: data.roles[i].id,
+            created_by: userId,
+            created_at: new Date(dateNowFormat),
+            updated_by: userId,
+            updated_at: new Date(dateNowFormat)
+          })
+        }
+      };
+  
+      for (let i = 0; i < oldRoles.length; i++) {
+        if (!data.roles.some(rol => rol.id === oldRoles[i].id)) {
+          rolesToDelete.push(oldRoles[i].id);
+        }
+      };
+    }
 
     const result = await DataBase.instance.userRole.bulkCreate(rolesAssign, { transaction });
 

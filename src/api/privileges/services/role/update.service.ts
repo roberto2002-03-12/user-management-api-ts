@@ -24,7 +24,7 @@ export const updateAssignMassiveActionToRoleService = async (role: UpdateRole, r
       ...role
     }, { transaction });
 
-    if (typeof role.action !== 'undefined') {
+    if (typeof role.action !== 'undefined' && role.action.length !== 0) {
 
       // puede que el rol no se le haya seleccionado los action aún
 
@@ -87,6 +87,13 @@ export const updateAssignMassiveActionToRoleService = async (role: UpdateRole, r
           transaction
         });
       };
+    } else {
+      await DataBase.instance.roleAction.destroy({
+        where: {
+          roleId
+        },
+        transaction
+      })
     };
 
     await transaction.commit();
