@@ -120,7 +120,7 @@ export const getAllUsersService = async (queries: IUserQuery) => {
         model: DataBase.instance.profile,
         as: 'profile',
         where: whereOptionsProfile,
-        required: false
+        required: typeof queries.fullName !== 'undefined' && queries.fullName !== '' ? true : false
       }, {
         model: DataBase.instance.role,
         as: 'role',
