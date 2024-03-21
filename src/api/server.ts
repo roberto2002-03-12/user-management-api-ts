@@ -2,6 +2,7 @@ import express, { Application, Response, Request, NextFunction } from 'express';
 // agregar importaciones de rutas aquí
 
 import { Router } from 'express';
+import serverless from 'serverless-http';
 
 import { router as UserRouter } from './auth/router/router';
 import { router as ProfileRouter } from './profile/router/routes';
@@ -86,5 +87,9 @@ export default class Server {
 
   start(callback: () => void): void {
     this._http.listen(this._port, callback);
+  }
+
+  handler() {
+    return serverless(this._app);
   }
 };

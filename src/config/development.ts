@@ -20,5 +20,6 @@ export const development: Development = {
   EMAIL_USE: process.env.EMAIL_USE!,
   EMAIL_HOST: process.env.EMAIL_HOST!,
   EMAIL_PORT: parseInt((process.env.EMAIL_PORT) ?? '587'),
-  EMAIL_SERVICE: process.env.EMAIL_SERVICE
+  EMAIL_SERVICE: process.env.EMAIL_SERVICE,
+  NODE_ENV: process.env.NODE_ENV ?? ''
 };
