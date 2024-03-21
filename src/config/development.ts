@@ -6,7 +6,6 @@ export interface Development extends EnvironmentBase {
 }
 
 export const development: Development = {
-  NODE_ENV: process.env.NODE_ENV ?? '',
   PORT: process.env.PORT!,
   DB_NAME: process.env.DB_NAME!,
   DB_HOST: process.env.DB_HOST!,

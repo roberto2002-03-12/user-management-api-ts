@@ -1,6 +1,5 @@
 // tener una interface base para no repetir código
 export interface EnvironmentBase {
-  NODE_ENV: string;
   PORT: string;
 
   // base de datos

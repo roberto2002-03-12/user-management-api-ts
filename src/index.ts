@@ -5,12 +5,8 @@ import moment from 'moment';
 
 export const server = Server.init(Number(config.PORT));
 
-export const handler = server.handler();
-
-if (config.NODE_ENV !== 'serverless') {
-  server.start(() => {
-    console.log('Server is running on PORT: ' + config.PORT);
-    DataBase.instance
-    console.log('MOMENT UTC Lima :: ', moment(new Date()).format('YYYY-MM-DD HH:mm:ss'));
-  });
-}
+server.start(() => {
+  console.log('Server is running on PORT: ' + config.PORT);
+  DataBase.instance
+  console.log('MOMENT UTC Lima :: ', moment(new Date()).format('YYYY-MM-DD HH:mm:ss'));
+});
